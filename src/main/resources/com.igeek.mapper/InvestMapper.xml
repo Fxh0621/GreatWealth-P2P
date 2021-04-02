@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.igeek.mapper.InvestMapper" >
+  <resultMap id="BaseResultMap" type="com.igeek.entity.Invest" >
+    <id column="investId" property="investid" jdbcType="INTEGER" />
+    <result column="investInTime" property="investintime" jdbcType="DATE" />
+    <result column="investOutTime" property="investouttime" jdbcType="DATE" />
+    <result column="investMoney" property="investmoney" jdbcType="DOUBLE" />
+    <result column="investInterest" property="investinterest" jdbcType="DOUBLE" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="investTypesId" property="investtypesid" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from invest
+    where investId = #{investid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.igeek.entity.Invest" >
+    insert into invest (investId, investInTime, investOutTime, 
+      investMoney, investInterest, userId, 
+      investTypesId)
+    values (#{investid,jdbcType=INTEGER}, #{investintime,jdbcType=DATE}, #{investouttime,jdbcType=DATE}, 
+      #{investmoney,jdbcType=DOUBLE}, #{investinterest,jdbcType=DOUBLE}, #{userid,jdbcType=INTEGER}, 
+      #{investtypesid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertInvest" parameterType="com.igeek.entity.Invest">
+     insert into invest
+     values (
+       investId = #{investid},
+       investInTime=#{investintime},
+       investOutTime=#{investouttime},
+       investMoney=#{investmoney},
+       investInterest=#{investinterest},
+       userId = #{userid},
+       investTypesId = #{investtypesid}
+     )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.igeek.entity.Invest" >
+    update invest
+    set investInTime = #{investintime,jdbcType=DATE},
+      investOutTime = #{investouttime,jdbcType=DATE},
+      investMoney = #{investmoney,jdbcType=DOUBLE},
+      investInterest = #{investinterest,jdbcType=DOUBLE},
+      userId = #{userid,jdbcType=INTEGER},
+      investTypesId = #{investtypesid,jdbcType=INTEGER}
+    where investId = #{investid,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select investId, investInTime, investOutTime, investMoney, investInterest, userId, 
+    investTypesId
+    from invest
+    where investId = #{investid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select investId, investInTime, investOutTime, investMoney, investInterest, userId, 
+    investTypesId
+    from invest
+  </select>
+
+
+  <select id="totalInvest" resultType="double">
+    select sum(investMoney)
+    from invest
+  </select>
+
+
+    <select id="selectAccountInvest" resultType="com.igeek.entity.AccountInvest">
+
+    </select>
+  <select id="getInvestInfromation" parameterType="java.lang.Integer" resultType="com.igeek.entity.InvestInfromation">
+    select u.username username,u.phoneNum phonenum,it.investInTime investintime,it.investOutTime investouttime,sum(it.investMoney) investmoney,sum(it.investInterest) investinterest
+    from user u,invest it,investtypes ie
+    where u.userId = it.userId and it.investTypesId = ie.investTypesId
+    and ie.investTimeType=#{investtimetype}
+  </select>
+  <select id="avgPerson" resultType="java.lang.Double">
+     select avg(investMoney)
+     from invest
+  </select>
+  <select id="avgPen" parameterType="java.lang.Integer" resultType="java.lang.Double">
+    select avg(it.investMoney)
+    from invest it,investtypes ie
+    where it.investTypesId = ie.investTypesId
+    and ie.investTimeType=#{investtimetype}
+  </select>
+  <select id="getAllInvestInterest" parameterType="java.lang.Integer" resultType="java.lang.Double">
+    select ifnull(sum(investInterest),0)
+    from invest
+    where userId =#{userid}
+  </select>
+
+</mapper>

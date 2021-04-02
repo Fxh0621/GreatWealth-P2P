@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.igeek.mapper.BorrowtypesMapper" >
+  <resultMap id="BaseResultMap" type="com.igeek.entity.Borrowtypes" >
+    <id column="borrowTypesId" property="borrowtypesid" jdbcType="INTEGER" />
+    <result column="borrowProject" property="borrowproject" jdbcType="VARCHAR" />
+    <result column="borrowType" property="borrowtype" jdbcType="VARCHAR" />
+    <result column="borrowRate" property="borrowrate" jdbcType="DOUBLE" />
+    <result column="borrowTimeType" property="borrowtimetype" jdbcType="INTEGER" />
+    <result column="lessInvestMoney" property="lessinvestmoney" jdbcType="DOUBLE" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from borrowtypes
+    where borrowTypesId = #{borrowtypesid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.igeek.entity.Borrowtypes" >
+    insert into borrowtypes (borrowTypesId, borrowProject, borrowType, 
+      borrowRate, borrowTimeType, lessInvestMoney
+      )
+    values (#{borrowtypesid,jdbcType=INTEGER}, #{borrowproject,jdbcType=VARCHAR}, #{borrowtype,jdbcType=VARCHAR}, 
+      #{borrowrate,jdbcType=DOUBLE}, #{borrowtimetype,jdbcType=INTEGER}, #{lessinvestmoney,jdbcType=DOUBLE}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.igeek.entity.Borrowtypes" >
+    update borrowtypes
+    set borrowProject = #{borrowproject,jdbcType=VARCHAR},
+      borrowType = #{borrowtype,jdbcType=VARCHAR},
+      borrowRate = #{borrowrate,jdbcType=DOUBLE},
+      borrowTimeType = #{borrowtimetype,jdbcType=INTEGER},
+      lessInvestMoney = #{lessinvestmoney,jdbcType=DOUBLE}
+    where borrowTypesId = #{borrowtypesid,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select borrowTypesId, borrowProject, borrowType, borrowRate, borrowTimeType, lessInvestMoney
+    from borrowtypes
+    where borrowTypesId = #{borrowtypesid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select borrowTypesId, borrowProject, borrowType, borrowRate, borrowTimeType, lessInvestMoney
+    from borrowtypes
+  </select>
+</mapper>

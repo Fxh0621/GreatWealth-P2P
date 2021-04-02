@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.igeek.mapper.BorrowMapper" >
+  <resultMap id="BaseResultMap" type="com.igeek.entity.Borrow" >
+    <id column="borrowId" property="borrowid" jdbcType="INTEGER" />
+    <result column="borrowTime" property="borrowtime" jdbcType="INTEGER" />
+    <result column="borrowMoney" property="borrowmoney" jdbcType="DOUBLE" />
+    <result column="borrowInterest" property="borrowinterest" jdbcType="DOUBLE" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="borrowTypesId" property="borrowtypesid" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from borrow
+    where borrowId = #{borrowid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.igeek.entity.Borrow" >
+    insert into borrow (borrowId, borrowTime, borrowMoney, 
+      borrowInterest, userId, borrowTypesId
+      )
+    values (#{borrowid,jdbcType=INTEGER}, #{borrowtime,jdbcType=INTEGER}, #{borrowmoney,jdbcType=DOUBLE}, 
+      #{borrowinterest,jdbcType=DOUBLE}, #{userid,jdbcType=INTEGER}, #{borrowtypesid,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.igeek.entity.Borrow" >
+    update borrow
+    set borrowTime = #{borrowtime,jdbcType=INTEGER},
+      borrowMoney = #{borrowmoney,jdbcType=DOUBLE},
+      borrowInterest = #{borrowinterest,jdbcType=DOUBLE},
+      userId = #{userid,jdbcType=INTEGER},
+      borrowTypesId = #{borrowtypesid,jdbcType=INTEGER}
+    where borrowId = #{borrowid,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select borrowId, borrowTime, borrowMoney, borrowInterest, userId, borrowTypesId
+    from borrow
+    where borrowId = #{borrowid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select borrowId, borrowTime, borrowMoney, borrowInterest, userId, borrowTypesId
+    from borrow
+  </select>
+    <select id="getBorrowRate" parameterType="java.lang.Integer" resultType="java.lang.Double">
+      select borrowRate
+      from borrowtypes
+      where borrowTypesId = #{borrowtypesid}
+    </select>
+  <select id="getAllBorrowInterest" parameterType="java.lang.Integer" resultType="java.lang.Double">
+      select ifnull(sum(borrowInterest),0)
+      from borrow
+      where userId =#{userid}
+  </select>
+    <select id="getAllBorrowById" parameterType="java.lang.Integer" resultType="com.igeek.entity.Borrow">
+    select *
+    from borrow
+    where userId = #{userid}
+    </select>
+</mapper>

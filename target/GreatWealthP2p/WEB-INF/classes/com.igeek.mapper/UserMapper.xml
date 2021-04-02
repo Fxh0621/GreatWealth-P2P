@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.igeek.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.igeek.entity.User" >
+    <id column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="phoneNum" property="phonenum" jdbcType="VARCHAR" />
+    <result column="personId" property="personid" jdbcType="VARCHAR" />
+    <result column="registerTime" property="registertime" jdbcType="DATE" />
+    <result column="balance" property="balance" jdbcType="DOUBLE" />
+    <result column="headerPic" property="headerpic" jdbcType="VARCHAR" />
+    <result column="investAllInterest" property="investallinterest" jdbcType="DOUBLE" />
+    <result column="borrowAllInterest" property="borrowallinterest" jdbcType="DOUBLE" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user
+    where userId = #{userid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.igeek.entity.User">
+    insert into user (userId, username, password, 
+      phoneNum, personId, registerTime, 
+      balance, headerPic, investAllInterest, 
+      borrowAllInterest)
+    values (#{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{phonenum,jdbcType=VARCHAR}, #{personid,jdbcType=VARCHAR}, #{registertime,jdbcType=DATE}, 
+      #{balance,jdbcType=DOUBLE}, #{headerpic,jdbcType=VARCHAR}, #{investallinterest,jdbcType=DOUBLE}, 
+      #{borrowallinterest,jdbcType=DOUBLE})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.igeek.entity.User" >
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      phoneNum = #{phonenum,jdbcType=VARCHAR},
+      personId = #{personid,jdbcType=VARCHAR},
+      registerTime = #{registertime,jdbcType=DATE},
+      balance = #{balance,jdbcType=DOUBLE},
+      headerPic = #{headerpic,jdbcType=VARCHAR},
+      investAllInterest = #{investallinterest,jdbcType=DOUBLE},
+      borrowAllInterest = #{borrowallinterest,jdbcType=DOUBLE}
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updatePersonId" parameterType="com.igeek.entity.User">
+    update user set personId = #{personid,jdbcType=VARCHAR} where userId = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateAllBorrowInterset" parameterType="com.igeek.entity.User">
+     update  user set borrowAllInterest = #{borrowallinterest,jdbcType=DOUBLE} where userId = #{userid,jdbcType=INTEGER}
+  </update>
+    <update id="updateUserInformation" parameterType="com.igeek.entity.User">
+      update user
+      set username = #{username},password=#{password},phoneNum=#{phonenum},headerPic=#{headerpic}
+      where userId = #{userid}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select userId, username, password, phoneNum, personId, registerTime, balance, headerPic, 
+    investAllInterest, borrowAllInterest
+    from user
+    where userId = #{userid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select userId, username, password, phoneNum, personId, registerTime, balance, headerPic, 
+    investAllInterest, borrowAllInterest
+    from user
+  </select>
+
+  <select id="selectByUsernamePassword" resultType="com.igeek.entity.User">
+     select *
+     from user
+     where username = #{username,jdbcType=VARCHAR} and password=#{password,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectUserCount" resultType="java.lang.Integer">
+     select count(*) from user
+  </select>
+  <select id="totalProfit" resultType="java.lang.Double">
+    select sum(investAllInterest) from user
+  </select>
+  <select id="profiRank" resultType="com.igeek.entity.ProfiHigh">
+    select username,investAllInterest
+    from user
+    order BY investAllInterest desc
+    limit 5
+  </select>
+  <select id="borrowRank" resultType="com.igeek.entity.BorrowHigh">
+    select u.username username,sum(it.investMoney) investAsset
+    from user u inner join invest it
+    on u.userId = it.userId
+    GROUP BY u.userId
+    ORDER BY sum(it.investMoney) desc
+    limit 5
+  </select>
+
+  <select id="accountInvestList" resultType="com.igeek.entity.AccountInvest" parameterType="java.lang.Integer">
+    select it.investInTime investintime,ie.investProject investproject,ie.investType investtype,it.investMoney investmoney
+    from user u,invest it,investtypes ie
+    where u.userId = it.userId and it.investTypesId = ie.investTypesId
+    and u.userId = #{userid}
+  </select>
+
+  <select id="accountBorrowList" resultType="com.igeek.entity.AccountBorrow" parameterType="java.lang.Integer">
+     select bw.borrowTime borrowtime,bt.borrowProject borrowproject,bt.borrowType borrowtype,bw.borrowMoney borrowmoney
+    from user u,borrow bw,borrowtypes bt
+    where u.userId = bw.userId and bw.borrowTypesId = bt.borrowTypesId
+    and u.userId =#{userid}
+  </select>
+
+  <select id="accountRechargeList" resultType="com.igeek.entity.Recharge" parameterType="java.lang.Integer">
+     select *
+     from recharge
+     where userid =#{userid}
+  </select>
+
+</mapper>

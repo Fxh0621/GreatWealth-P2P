@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.igeek.mapper.RechargeMapper" >
+  <resultMap id="BaseResultMap" type="com.igeek.entity.Recharge" >
+    <id column="reId" property="reid" jdbcType="INTEGER" />
+    <result column="reTime" property="retime" jdbcType="DATE" />
+    <result column="reMoney" property="remoney" jdbcType="DOUBLE" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from recharge
+    where reId = #{reid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.igeek.entity.Recharge" >
+    insert into recharge (reId, reTime, reMoney, 
+      userId)
+    values (#{reid,jdbcType=INTEGER}, #{retime,jdbcType=DATE}, #{remoney,jdbcType=DOUBLE}, 
+      #{userid,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.igeek.entity.Recharge" >
+    update recharge
+    set reTime = #{retime,jdbcType=DATE},
+      reMoney = #{remoney,jdbcType=DOUBLE},
+      userId = #{userid,jdbcType=INTEGER}
+    where reId = #{reid,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select reId, reTime, reMoney, userId
+    from recharge
+    where reId = #{reid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select reId, reTime, reMoney, userId
+    from recharge
+  </select>
+    <select id="getLastInsertId" resultType="java.lang.Integer">
+      select LAST_INSERT_ID()
+    </select>
+</mapper>

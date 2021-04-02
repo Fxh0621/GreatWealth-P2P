@@ -1,0 +1,32 @@
+.footer-li li{
+    color: white;
+    margin-top: 20px;
+    font-size: 15px;
+  }
+  .footer-contact{
+    margin-top: 20px;
+  }
+  .footer-contact li{
+    color: white;
+    margin-top: 10px;
+  }
+  .footer-contact li:first-child{
+    font-size: 25px;
+  }
+  .footer-pic li:first-child{
+    margin-left: 260px;
+  }
+  .footer-pic li{
+      float: left;
+      margin-left: 50px;
+  }
+  .footer-text li:first-child{
+    margin-left: 140px;
+  }
+  .footer-text li{
+    float: left;
+    margin-left: 20px;
+    margin-top: 19px;
+    color: white;
+    font-size: 17px;
+  }

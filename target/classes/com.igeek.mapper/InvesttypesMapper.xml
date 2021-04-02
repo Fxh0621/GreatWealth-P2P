@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.igeek.mapper.InvesttypesMapper" >
+  <resultMap id="BaseResultMap" type="com.igeek.entity.Investtypes" >
+    <id column="investTypesId" property="investtypesid" jdbcType="INTEGER" />
+    <result column="investProject" property="investproject" jdbcType="VARCHAR" />
+    <result column="investType" property="investtype" jdbcType="VARCHAR" />
+    <result column="investRate" property="investrate" jdbcType="DOUBLE" />
+    <result column="investTimeType" property="investtimetype" jdbcType="INTEGER" />
+    <result column="lessInvestMoney" property="lessinvestmoney" jdbcType="DOUBLE" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from investtypes
+    where investTypesId = #{investtypesid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.igeek.entity.Investtypes" >
+    insert into investtypes (investTypesId, investProject, investType, 
+      investRate, investTimeType, lessInvestMoney
+      )
+    values (#{investtypesid,jdbcType=INTEGER}, #{investproject,jdbcType=VARCHAR}, #{investtype,jdbcType=VARCHAR}, 
+      #{investrate,jdbcType=DOUBLE}, #{investtimetype,jdbcType=INTEGER}, #{lessinvestmoney,jdbcType=DOUBLE}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.igeek.entity.Investtypes" >
+    update investtypes
+    set investProject = #{investproject,jdbcType=VARCHAR},
+      investType = #{investtype,jdbcType=VARCHAR},
+      investRate = #{investrate,jdbcType=DOUBLE},
+      investTimeType = #{investtimetype,jdbcType=INTEGER},
+      lessInvestMoney = #{lessinvestmoney,jdbcType=DOUBLE}
+    where investTypesId = #{investtypesid,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select investTypesId, investProject, investType, investRate, investTimeType, lessInvestMoney
+    from investtypes
+    where investTypesId = #{investtypesid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select investTypesId, investProject, investType, investRate, investTimeType, lessInvestMoney
+    from investtypes
+  </select>
+</mapper>
